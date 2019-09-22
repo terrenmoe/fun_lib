@@ -10,8 +10,7 @@ const imgExt = /\.bmp|gif|jpe?g|png$/;
 const htmlExt = /\.html$/;
 const jsonExt = /\.json$/;
 const rcExt = /rc(\.js)?$/;
-const truth = /true/;
-const fallacy = /false/;
+const svgExt = /\.svg$/;
 const REACT_APP_PREFIX = /^REACT_APP_/i;
 const NODE_ENV = /^NODE_ENV/i;
 const REGEX_ESC = /[.*+?^${}()|[\]\\]/g;
@@ -25,6 +24,7 @@ const HTML_ESC_MAP = new Map([
   ["'", '&#39;'],
   ['"', '&quot;']
 ]);
+
 const HTML_UNESC_MAP = new Map([
   ['&amp;', '&'],
   ['&lt;', '<'],
@@ -70,7 +70,6 @@ module.exports = {
   doubleSpace,
   escapeHTML,
   escapeRegExp,
-  fallacy,
   imgExt,
   htmlExt,
   jsExt,
@@ -78,7 +77,7 @@ module.exports = {
   rcExt,
   sassExt,
   sassModuleExt,
-  truth,
+  svgExt,
   tsExt,
   unescapeHTML,
 };

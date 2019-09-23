@@ -8,6 +8,10 @@ const exampleDirs = (dir = cwd()) => readdirSync(dir).filter(
   (file) => statSync(join(dir, file)).isDirectory()
 );
 
-module.exports.traverse = (dirs = exampleDirs(cwd())) => {
-  return dirs.map((cur) => [cur, exampleDirs(cur)]);
+const traverse = (dirs = exampleDirs(cwd())) => {
+  for (const i of dirs) {
+    console.log(i, exampleDirs(i));
+  }
 };
+
+module.exports.traverse = traverse;

@@ -9,29 +9,29 @@ const partArgs = (fn, ...part1) => (...part2) => fn(...part1, ...part2);
 const partArgsR = (fn, ...part1) => (...part2) => fn(...part2, ...part1);
 const reverseArgs = (fn) => (...args) => fn(...args.reverse());
 const not = (tof) => (...args) => !tof(...args);
-const when = (tof, fn) => (...args) => tof(...args) ? fn(...args) : undefined;
+const when = (tof, fn) => (...args) => (tof(...args) ? fn(...args) : undefined);
 const over = (...fns) => (...args) => fns.map((fn) => fn(...args));
 const rearg = (fn, idxs) => (...args) => fn(...idxs.map((i) => args[i]));
 const compose2 = (fn2, fn1) => (ogVal) => fn2(fn1(ogVal));
 const curry = (fn, len = fn.length, nextCurried) => (
   nextCurried = (prevArgs) => (nextArg) => {
-    let args = [...prevArgs, nextArg];
-    if(!(args.length >= len)) return nextCurried(args);
+    const args = [...prevArgs, nextArg];
+    if (!(args.length >= len)) return nextCurried(args);
     return fn(...args);
   }
 )([]);
 const uncurry = (fn) => (...args) => {
   let ret = fn;
-  for(let arg of args) {
+  for (const arg of args) {
     ret = ret(arg);
   }
   return ret;
 };
 
 const compose = (...fns) => (res) => {
-  let list = [...fns];
-  while(list.length > 0) {
-    // take the last function off the end of the list
+  const list = [...fns];
+  while (list.length > 0) {
+    // Take the last function off the end of the list
     // and execute it
     res = list.pop()(res);
   }
@@ -41,7 +41,7 @@ const compose = (...fns) => (res) => {
 const sampleSize =
 ([...arr], n = 1) => {
   let m = arr.length;
-  while(m) {
+  while (m) {
     const i = Math.floor(Math.random() * m--);
     [arr[m], arr[i]] = [arr[i], arr[m]];
   }
@@ -83,55 +83,20 @@ const difference =
 const union = (a, b) => Array.from(new Set([...a, ...b]));
 const uniqueElements = (arr) => [...new Set(arr)];
 
-// browser based
-const detectDeviceType =
-(
-  regex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/,
-  prop = navigator.userAgent,
-) => regex.test(prop) ? 'Mobile' : 'Desktop';
-
-const getScrollPosition =
-(el = window) => ({
-  x: el.pageXOffset !== undefined ? el.pageXOffset : el.scrollLeft,
-  y: el.pageYOffset !== undefined ? el.pageYOffset : el.scrollTop
-});
-
-const scrollToTop =
-() => {
-  const c = document.documentElement.scrollTop || document.body.scrollTop;
-  if(c > 0) {
-    window.requestAnimationFrame(scrollToTop);
-    window.scrollTo(0, c - (c / 8));
-  }
-};
-
-const getStyle =
-(el, ruleName) => getComputedStyle(el)[ruleName];
-
-const setStyle =
-(el, ruleName, val) => el.style.setProperty(ruleName, val);
-
-const redirect =
-(url, asLink = true, ele = location) => asLink ? ele.setAttribute('href', url) : ele.replace(url);
-
-const httpsRedirect =
-() => {
-  if(location.protocol !== 'https:') location.replace(`https://${location.href.split('//')[1]}`);
-};
-
-const isBrowserTabFocused = () => !document.hidden;
-
 const clampNumber =
 (num, a, b) => Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
 
 const luhnCheck =
 (num) => {
-  let arr = `${num}`
+  const arr = `${num}`
     .split('')
     .reverse()
     .map((x) => parseInt(x));
-  let lastDigit = arr.splice(0, 1)[0];
-  let sum = arr.reduce((acc, val, i) => i % 2 !== 0 ? acc + val : acc + ((val * 2) % 9) || 9, 0);
+  const lastDigit = arr.splice(0, 1)[0];
+  let sum = arr.reduce(
+    (acc, val, i) => (i % 2 !== 0 ? acc + val : acc + ((val * 2) % 9) || 9),
+    0
+  );
   sum += lastDigit;
   return sum % 10 === 0;
 };
@@ -169,26 +134,29 @@ const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const pluralize =
 (val, word, plural = `${word}s`) => {
   const _pluralize = (num, _word, _plural = `${word}s`) =>
-    [1, -1].includes(Number(num)) ? _word : _plural;
+    ([1, -1].includes(Number(num)) ? _word : _plural);
 
-  if(typeof val === 'object') {
+  if (typeof val === 'object') {
     return (num, _word) => _pluralize(num, _word, val[word]);
   }
   return _pluralize(val, word, plural);
 };
 
-const stringPermutations = (str) => {
-  if(str.length <= 2) return str.length === 2 ? [str, str[1] + str[0]] : [str];
+const stringPtx = (str) => {
+  if (str.length <= 2) return str.length === 2 ? [str, str[1] + str[0]] : [str];
   return str
     .split('')
     .reduce(
-      (acc, letter, i) =>
-        acc.concat(stringPermutations(str.slice(0, i) + str.slice(i + 1)).map((val) => letter + val)),
-      []
+      (acc, letter, i) => (
+        acc.concat(stringPtx(
+          str.slice(0, i) + str.slice(i + 1)).map((val) => letter + val)
+        ),
+        []
+      )
     );
 };
 
-const siPrefix = (() => {
+const siPrefix = (function() {
   const { abs, log10, floor } = Math;
   const PREFIXES = new Map([
     [10 ** 24, 'Y'],
@@ -212,7 +180,7 @@ const siPrefix = (() => {
     [10 ** -24, 'y']
   ]);
 
-  const isZero = (n) => n === 0;
+  const isZero = (numbe) => numbe === 0;
   const isNeg = (nu) => nu < 0;
   const isFractional = (num) => (num < 1) && (num > -1);
 
@@ -220,26 +188,26 @@ const siPrefix = (() => {
   (numb) => floor((isNeg(numb) ? -1 : 1) * log10(abs(numb)));
 
   const getAbsScienceForm =
-  (numbe, p) => Number((abs(numbe) / abs(10 ** getBase10Power(numbe))).toPrecision(p));
+  (n, p) => Number((abs(n) / abs(10 ** getBase10Power(n))).toPrecision(p));
 
   const getPrefix =
-  (nume) => PREFIXES.has(nume) ? PREFIXES.get(nume) : '??';
+  (nume) => (PREFIXES.has(nume) ? PREFIXES.get(nume) : '??');
 
-  return (numeric, sep = '', precision = 3) => {
-    let [zero, fractional, neg] = [
+  return function siPrefix(numeric, sep = '', precision = 3) {
+    const [zero, fractional, neg] = [
       isZero(numeric),
       isFractional(numeric),
       isNeg(numeric)
     ];
-    if(zero) return 0;
-    if(fractional) {
-      if(neg) {
+    if (zero) return 0;
+    if (fractional) {
+      if (neg) {
         return -1;
       } else {
         return 1;
       }
     }
-    let [sign, numOut, prefix] = [
+    const [sign, numOut, prefix] = [
       neg ? '-' : '',
       getAbsScienceForm(numeric, precision),
       getPrefix(10 ** getBase10Power(numeric))
@@ -273,19 +241,11 @@ module.exports = {
   difference,
   union,
   uniqueElements,
-  detectDeviceType,
-  getScrollPosition,
-  scrollToTop,
-  getStyle,
-  setStyle,
-  httpsRedirect,
-  isBrowserTabFocused,
-  redirect,
   clampNumber,
   luhnCheck,
   compactWhitespace,
   pluralize,
-  stringPermutations,
+  stringPtx,
   siPrefix,
   escapeHTML,
   unescapeHTML,

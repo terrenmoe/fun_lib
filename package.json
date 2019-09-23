@@ -1,0 +1,31 @@
+{
+  "name": "fun_lib",
+  "version": "1.0.0",
+  "description": "A functional programming library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "fp",
+    "functional",
+    "js",
+    "lib",
+    "library",
+    "programming",
+    "javascript"
+  ],
+  "author": "Alex Rossiter <terrenmoe@gmail.com>",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.6",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-loader": "^3.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.2.0"
+  }
+}

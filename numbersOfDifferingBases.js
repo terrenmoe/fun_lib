@@ -9,16 +9,20 @@ const HEX_RADIX = 16;
 const toHex = (num) => num.toString(HEX_RADIX);
 // global parseInt(value,radix)
 const toDeci = (str) => parseInt(str, HEX_RADIX);
-// array used to map to hex
-const initalBase10 = [16, 32, 48, 64, 80, 96];
 
 // Demo
+// Array used to map to hex
+const initalBase10 = [15, 31, 47, 63, 79, 95];
 // initalBase10 values mapped to an array of hex strings equal in value
 const base16Mapped = initalBase10.map(toHex);
-// reversing the operation with base16Mapped to base 10 numbers
+// Reversing the operation with base16Mapped to base 10 numbers
 const base10Mapped = base16Mapped.map(toDeci);
 
-console.log(base16Mapped);
-// [ '10', '20', '30', '40', '50', '60' ]
-console.log(base10Mapped);
-// [ 16, 32, 48, 64, 80, 96 ]
+console.log(
+  base16Mapped
+);
+// → [ 'f', '1f', '2f', '3f', '4f', '5f' ]
+console.log(
+  base10Mapped
+);
+// → [ 15, 31, 47, 63, 79, 95 ]
